@@ -1,24 +1,27 @@
-import { Db } from 'mongodb'
+import { Request, Response } from 'express'
 
-import MoradoresService from '../service/moradorService'
+import connectMongo from '../providers/mongodb'
 import MoradoresRepository from '../repository/moradorRepository'
+import MoradoresService from '../service/moradorService'
 
-export default class MoradoresController {
-  private moradoresService: MoradoresService;
-  
-  constructor(db: Db) {
-    const repository = new MoradoresRepository(db)
-    this.moradoresService = new MoradoresService(repository)
-  }
-  
-  public async index() {
-
-    const response = await this.moradoresService.show();
+const MoradoresController = {  
+  async index(req: Request, res: Response) {
+    const { database } = await connectMongo()
     
-    return {
-      message: response ? 'Sucesso' : 'Erro',
-      moradores: response
+    if (database) {
+      const repository = new MoradoresRepository(database)
+      const moradoresService = new MoradoresService(repository)
+      const response = await moradoresService.show();
+      
+      return res.send({
+        message: response ? 'Sucesso' : 'Erro',
+        moradores: response
+      })
+    } else {
+      return res.status(500).json({ message: 'Could not connect to database' })
     }
   }
 
 }
+
+export default MoradoresController
