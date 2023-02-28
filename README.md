@@ -20,3 +20,9 @@
   - compra no stripe
 - [ ] webhooks
   - webhooks para verificar ações no stripe
+
+## Boas leituras
+
+- Boas práticas
+  - [Performance](https://expressjs.com/pt-br/advanced/best-practice-performance.html)
+  - [Segurança](https://expressjs.com/pt-br/advanced/best-practice-security.html)
