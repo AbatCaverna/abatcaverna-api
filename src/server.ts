@@ -1,10 +1,15 @@
 import express from 'express'
-import route from './routes'
 import * as dotenv from 'dotenv'
+import helmet from 'helmet'
+
+import route from './routes'
 
 dotenv.config()
 
 const app = express()
+
+// set security headers
+app.use(helmet())
 
 app.use(express.json())
 
