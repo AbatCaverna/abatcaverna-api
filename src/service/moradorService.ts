@@ -20,6 +20,16 @@ export default class MoradoresService {
 
   }
 
+  public async showOne(name: string) {
+    try {
+      const moradores = await this._moradorRepository.getMorador(name)
+    
+      return moradores
+    } catch (error) {
+      throw new Error('Erro no servidor')
+    }
+  }
+
   public async changePassword(name: string, new_password: string) {
     try {
       const morador = await this._moradorRepository.getMorador(name)
