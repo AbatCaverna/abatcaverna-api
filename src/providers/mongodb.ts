@@ -1,7 +1,7 @@
 import { Db, MongoClient } from 'mongodb'
 
 type Connection = {
-  database: Db | undefined
+  database: Db
 }
 
 async function connectMongo(): Promise<Connection> {
@@ -27,7 +27,7 @@ async function connectMongo(): Promise<Connection> {
     return { database }
   } catch (error) {
     console.error(`Error[SERVER](${new Date().toDateString()}): Database connection error!`, error)
-    return { database: undefined }
+    throw new Error('Could not connect to database server!')
   }
 
 }

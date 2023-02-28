@@ -6,19 +6,19 @@ import MoradoresService from '../service/moradorService'
 
 const MoradoresController = {  
   async index(req: Request, res: Response) {
-    const { database } = await connectMongo()
-    
-    if (database) {
+    try {
+      const { database } = await connectMongo()
       const repository = new MoradoresRepository(database)
       const moradoresService = new MoradoresService(repository)
-      const response = await moradoresService.show();
+      const response = await moradoresService.show()
       
       return res.send({
         message: response ? 'Sucesso' : 'Erro',
         moradores: response
       })
-    } else {
-      return res.status(500).json({ message: 'Could not connect to database' })
+    } catch (error) {
+      console.error(`Error[SERVER](${new Date().toDateString()}): Server error!`, error)
+      return res.status(500).json({ message: 'Something went wrong with server', error })
     }
   }
 
