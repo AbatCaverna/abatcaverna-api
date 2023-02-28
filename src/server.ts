@@ -1,5 +1,6 @@
-import express from 'express'
+import cors from 'cors'
 import * as dotenv from 'dotenv'
+import express from 'express'
 import helmet from 'helmet'
 
 import route from './routes'
@@ -10,6 +11,7 @@ const app = express()
 
 // set security headers
 app.use(helmet())
+app.use(cors())
 
 app.use(express.json())
 
