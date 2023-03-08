@@ -1,15 +1,10 @@
 import { Request, Response } from 'express'
 
-import connectMongo from '../providers/mongodb'
-import MoradoresRepository from '../repository/moradorRepository'
-import MoradoresService from '../service/moradorService'
+import moradoresService from '../service/moradorService'
 
 const MoradoresController = {  
   async index(req: Request, res: Response) {
     try {
-      const { database } = await connectMongo()
-      const repository = new MoradoresRepository(database)
-      const moradoresService = new MoradoresService(repository)
       const response = await moradoresService.show()
       
       return res.send({
@@ -25,9 +20,6 @@ const MoradoresController = {
   async changePassword(req: Request, res: Response) {
     const { name, new_password } = req.body
     try {
-      const { database } = await connectMongo()
-      const repository = new MoradoresRepository(database)
-      const moradoresService = new MoradoresService(repository)
       await moradoresService.changePassword(name, new_password)
       
       return res.send({

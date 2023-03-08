@@ -1,9 +1,6 @@
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-
-import connectMongo from '../providers/mongodb'
-import MoradoresRepository from '../repository/moradorRepository'
-import MoradoresService from '../service/moradorService'
+import moradoresService from 'service/moradorService'
 import returnHashString from '../util/crypto'
 
 type Credentials = {
@@ -23,9 +20,6 @@ const SessionController = {
     const { username, password } = req.body
 
     try {
-      const { database } = await connectMongo()
-      const repository = new MoradoresRepository(database)
-      const moradoresService = new MoradoresService(repository)
       const morador = await moradoresService.showOne(username)
 
       if (!morador) {

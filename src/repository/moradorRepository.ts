@@ -1,67 +1,107 @@
-import { Db, ObjectId } from 'mongodb'
-import Morador from '../models/morador'
+import { ObjectId } from 'mongodb'
 
-export default class MoradoresRepository {
-  private _database: Db
+import Morador from 'models/morador'
+import getDatabase from 'util/database'
 
-  constructor(database: Db) {
-    this._database = database
-  }
+const MoradoresRepository = {
 
-  public async getAllMoradores(): Promise<Morador[]> {
-    const moradores = (await this._database
-      .collection('moradores')
-      .find({ cachaca_para_tomar: { $exists: true } }) // retira selina dos moradores
-      .sort({ cachaca_ja_tomada: -1 }) // ordenas pelos q tomaram mais cachaca
-      .toArray()) as Morador[]
+  async getAllMoradores(): Promise<Morador[]> {
+    try {
+      const _database = await getDatabase()
 
-    return moradores
-  }
+      const moradores = (await _database
+        .collection('moradores')
+        .find({ cachaca_para_tomar: { $exists: true } }) // retira selina dos moradores
+        .sort({ cachaca_ja_tomada: -1 }) // ordenas pelos q tomaram mais cachaca
+        .toArray()) as Morador[]
 
-  public async addCachaca(morador_id: string): Promise<void> {
-    // define uma nova cachaca para um morador
-    await this._database.collection('moradores').updateOne(
-      {
-        _id: new ObjectId(morador_id),
-      },
-      { $inc: { cachaca_para_tomar: 1 } }
-    )
-  }
+      return moradores
+    } catch (error) {
+      throw new Error(`Something wrong with server, ${error}`)
+    }
+    
+  },
 
-  public async updateCachaca(morador_id: string, cachaca_ja_tomada: number, cachaca_para_tomar?: number) {
-    await this._database.collection('moradores').updateOne(
-      { _id: new ObjectId(morador_id) },
-      { $inc: cachaca_para_tomar ? { 
-        cachaca_para_tomar: cachaca_para_tomar,
-        cachaca_ja_tomada: cachaca_ja_tomada
-      } : {
-        cachaca_ja_tomada: cachaca_ja_tomada
-      }}
-    )
-  }
+  async addCachaca(morador_id: string): Promise<void> {
+    try {
+      const _database = await getDatabase()
+      // define uma nova cachaca para um morador
+      await _database.collection('moradores').updateOne(
+        {
+          _id: new ObjectId(morador_id),
+        },
+        { $inc: { cachaca_para_tomar: 1 } }
+      )
+    } catch (error) {
+      throw new Error(`Something wrong with server, ${error}`)
+    }
+    
+  },
 
-  public async getOneMorador(morador_id: string): Promise<Morador> {
-    const [morador] = (await this._database
-      .collection('moradores')
-      .find({ _id: new ObjectId(morador_id) })
-      .toArray()) as Morador[]
-    return morador
-  }
+  async updateCachaca(morador_id: string, cachaca_ja_tomada: number, cachaca_para_tomar?: number) {
+    try {
+      const _database = await getDatabase()
+      await _database.collection('moradores').updateOne(
+        { _id: new ObjectId(morador_id) },
+        { $inc: cachaca_para_tomar ? { 
+          cachaca_para_tomar: cachaca_para_tomar,
+          cachaca_ja_tomada: cachaca_ja_tomada
+        } : {
+          cachaca_ja_tomada: cachaca_ja_tomada
+        }}
+      )
+    } catch (error) {
+      throw new Error(`Something wrong with server, ${error}`)
+    }
+  },
 
-  public async getMorador(name: string) {
-    return await this._database
-      .collection('moradores')
-      .findOne({ apelido: name }) as Morador
-  }
+  async getOneMorador(morador_id: string): Promise<Morador> {
+    try {
+      const _database = await getDatabase()
+      const [morador] = (await _database
+        .collection('moradores')
+        .find({ _id: new ObjectId(morador_id) })
+        .toArray()) as Morador[]
+      return morador
+    } catch (error) {
+      throw new Error(`Something wrong with server, ${error}`)
+    }
+  },
 
-  public async create(morador: Morador) {
-    return await this._database
-      .collection('moradores')
-      .insertOne(morador)
-  }
+  async getMorador(name: string) {
+    try {
+      const _database = await getDatabase()
+      return await _database
+        .collection('moradores')
+        .findOne({ apelido: name }) as Morador
+    } catch (error) {
+      throw new Error(`Something wrong with server, ${error}`)
+    }
+    
+  },
 
-  public async changePassword(name: string, new_password: string) {
-    await this._database.collection('moradores')
-      .updateOne({ apelido: name }, { $set: { senha: new_password } })
-  }
+  async create(morador: Morador) {
+    try {
+      const _database = await getDatabase()
+      return await _database
+        .collection('moradores')
+        .insertOne(morador)
+    } catch (error) {
+      throw new Error(`Something wrong with server, ${error}`)
+    }
+    
+  },
+
+  async changePassword(name: string, new_password: string) {
+    try {
+      const _database = await getDatabase()
+      await _database.collection('moradores')
+        .updateOne({ apelido: name }, { $set: { senha: new_password } })
+    } catch (error) {
+      throw new Error(`Something wrong with server, ${error}`)
+    }
+    
+  },
 }
+
+export default MoradoresRepository
