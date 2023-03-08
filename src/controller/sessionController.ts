@@ -1,16 +1,15 @@
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
+
+
 import moradoresService from '../service/moradorService'
+import UserService from '../service/userService'
 import returnHashString from '../util/crypto'
+import { Role } from '../util/types'
 
 type Credentials = {
   username: string
   password: string
-}
-
-enum Role {
-  cavernoso = 'cavernoso',
-  usuario = 'usuario',
 }
 
 const privateKey = process.env.NEXTAUTH_SECRET
@@ -54,6 +53,19 @@ const SessionController = {
       res.status(500).send({ message: 'Something went wrong', error})
     }
 
+  },
+  async user(req: Request<Credentials>, res: Response) {
+    const { user } = req.body
+
+    try {
+      const response = await UserService.createUserIfNotInDB(user)
+
+      res.status(200).send({ message: 'Sucess', user: response })
+      
+    } catch (error) {
+      res.status(500).send({ message: 'Something went wrong', error})
+    }
+    
   }
 }
 
