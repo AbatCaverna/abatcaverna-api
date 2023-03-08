@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import moradoresService from 'service/moradorService'
+import moradoresService from '../service/moradorService'
 import returnHashString from '../util/crypto'
 
 type Credentials = {

@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb'
 
-import Morador from 'models/morador'
-import getDatabase from 'util/database'
+import Morador from '../models/morador'
+import getDatabase from '../util/database'
 
 const MoradoresRepository = {
 

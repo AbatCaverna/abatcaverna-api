@@ -1,5 +1,5 @@
-import MoradoresRepository from 'repository/moradorRepository'
-import returnHashString from 'util/crypto'
+import MoradoresRepository from '../repository/moradorRepository'
+import returnHashString from '../util/crypto'
 
 const MoradoresService = {
   async show() {
