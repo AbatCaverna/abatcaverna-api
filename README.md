@@ -2,7 +2,7 @@
 
 ## Rotas
 
-- [ ] auth
+- [x] auth
   - manejar sessões dos usuários, armazenar JWT e criar novas sessões
 - [ ] produtos
   - CRUD produtos no stripe
