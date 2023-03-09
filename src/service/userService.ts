@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 import UserRespository from '../repository/userRepository'
-import stripe from '../providers/stripe'
+import getStripe from '../providers/stripe'
 
 const UserSchema = z.object({
   name: z.string(),
@@ -18,8 +18,10 @@ const UserService = {
 
     try {
       const userFound = await UserRespository.getUserByEmail(user.email)
-      
+
       if (!userFound) {
+        const stripe = getStripe()
+        
         const stripe_customer = await stripe.customers.create({
           email: user.email
         })
@@ -32,7 +34,7 @@ const UserService = {
 
       return userFound
     } catch (error) {
-      throw new Error('Something went wrong')      
+      throw new Error(`Something wrong, ${error}`)      
     }
   }
 }
