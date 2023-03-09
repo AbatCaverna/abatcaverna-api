@@ -26,3 +26,11 @@
 - Boas práticas
   - [Performance](https://expressjs.com/pt-br/advanced/best-practice-performance.html)
   - [Segurança](https://expressjs.com/pt-br/advanced/best-practice-security.html)
+
+## Stripe
+
+Em alguma rotas é necessário uma conexão com o stripe, para isso é necessário instalar a [stripe-cli](https://stripe.com/docs/stripe-cli?locale=pt-BR).
+
+Para iniciar ela é preciso fazer o login, com o comando ```stripe loing --api-key STRIPE_PRIVATE_KEY```.
+
+E para iniciar a ouvir os comando deve iniciar com ```stripe listen```
