@@ -14,6 +14,6 @@ route.post('/session/user', SessionController.user)
 route.get('/moradores', validateJWT, MoradoresController.index)
 route.put('/moradores/change-password', MoradoresController.changePassword)
 
-route.post('/checkout', CheckoutController.index)
+route.post('/checkout', validateJWT, CheckoutController.index)
 
 export default route

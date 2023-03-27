@@ -33,8 +33,6 @@ const SessionController = {
         return res.status(422).send({ message: 'Error'})
       }
 
-      console.log(privateKey)
-
       if (privateKey === undefined) {
         console.error(`Error[SERVER](${new Date().toDateString()}): Must provide a NEXTAUTH_SECRET env var`)
         throw new Error('Must provide a NEXTAUTH_SECRET env var')
@@ -42,7 +40,6 @@ const SessionController = {
 
       const jwt_token = jwt.sign(morador, privateKey, {
         expiresIn: 60 * 60 * 24 * 30, // 30 dias
-        algorithm: 'HS512'
       })
       
       return res.send({
