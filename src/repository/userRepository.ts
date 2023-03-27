@@ -26,6 +26,23 @@ const UserRespository = {
     } catch (error) {
       throw new Error(`Something wrong with server, ${error}`)
     }
+  },
+
+  async update(email: string, name?: string, stripeCustomerId?: string) {
+    try {
+      const _database = await getDatabase()
+      
+      return await _database.collection('users').updateOne({
+        email: email
+      }, {
+        $set: {
+          name: name,
+          stripe_customer_id: stripeCustomerId
+        }
+      })
+    } catch (error) {
+      throw new Error(`Something wrong with server, ${error}`)
+    }
   }
 }
 
