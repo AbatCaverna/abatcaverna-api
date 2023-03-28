@@ -20,6 +20,7 @@ route.post('/checkout', validateJWT, CheckoutController.index)
 
 route.get('/produtos', ProdutosController.getAllProducts)
 route.get('/produtos/:email', validateJWT, ProdutosController.getAllProductsByEmail)
+route.post('/produtos', validateJWT, ProdutosController.createProduct) 
 route.post('/produtos/upload-file', upload, ProdutosController.uploadProductFile)
 
 

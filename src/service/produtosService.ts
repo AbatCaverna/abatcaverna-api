@@ -29,7 +29,21 @@ const ProdutosService = {
 
   async upload(file: Express.Multer.File) {
     return ProdutosRepository.uploadFile(file)
-  } 
+  },
+
+  async create(name: string, value: number, description?: string, images?: string[]): Promise<Product> {
+    const response = await ProdutosRepository.createProduct(name, value, description, images)
+
+    return {
+      id: response.product.id,
+      stripe_id: response.product.id,
+      image: response.product.images[0],
+      name: response.product.name,
+      tax: response.product.metadata.taxas,
+      price: response.price.unit_amount ?? 0,
+      stripe_price_id: response.price.id,
+    }
+  }
 } 
 
 export default ProdutosService

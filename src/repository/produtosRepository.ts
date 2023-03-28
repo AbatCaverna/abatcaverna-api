@@ -3,7 +3,7 @@ import fs from 'fs'
 
 import getStripe from '../providers/stripe'
 import getDatabase from '../util/database'
-import { ProductsResponse, StripePrice, StripeProduct } from '../util/types'
+import { ProductsResponse, StripePrice, StripeProduct, ProductResponse } from '../util/types'
 
 type Product = {
   price_id: string
@@ -83,6 +83,27 @@ const ProdutosRepository = {
     })
 
     return link.url
+  },
+
+  async createProduct(name: string, value: number, description?: string, images?: string[]): Promise<ProductResponse> {
+    const stripe = getStripe()
+
+    const product_created = await stripe.products.create({
+      name,
+      description,
+      images
+    })
+
+    const price = await stripe.prices.create({
+      unit_amount: value,
+      currency: 'brl',
+      product: product_created.id,
+    })
+
+    return {
+      product: product_created,
+      price
+    } 
   }
 }
 

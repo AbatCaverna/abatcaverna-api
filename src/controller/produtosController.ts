@@ -40,13 +40,28 @@ const ProdutosController = {
       const link = await ProdutosService.upload(file)
       return res.send({
         message: 'Sucess',
-        data: link
+        image_url: link
       })
     } catch (error) {
       console.error(`Error[SERVER](${new Date().toDateString()}): Server error!`, error)
       return res.status(500).json({ message: 'Something went wrong with server', error })
     }
     
+  },
+
+  async createProduct(req: Request, res: Response) {
+    try {
+      const { name, value, description, images } = req.body
+      const product = await ProdutosService.create(name, value, description, images)
+      
+      return res.send({
+        message: 'Success',
+        product: product
+      }) 
+    } catch (error) {
+      console.error(`Error[SERVER](${new Date().toDateString()}): Server error!`, error)
+      return res.status(500).json({ message: 'Something went wrong with server', error })
+    }
   }
 }
 
