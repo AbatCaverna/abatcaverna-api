@@ -5,6 +5,7 @@ import SessionController from '../controller/sessionController'
 import CheckoutController from '../controller/checkoutController'
 
 import validateJWT from '../middleware/validateJWT'
+import ProdutosController from '../controller/produtosController'
 
 const route = Router()
 
@@ -15,5 +16,7 @@ route.get('/moradores', validateJWT, MoradoresController.index)
 route.put('/moradores/change-password', MoradoresController.changePassword)
 
 route.post('/checkout', validateJWT, CheckoutController.index)
+
+route.get('/produtos', ProdutosController.getAllProducts)
 
 export default route
