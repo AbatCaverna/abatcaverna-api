@@ -25,7 +25,11 @@ const ProdutosService = {
         stripe_price_id: data.price.id,
       }
     })
-  }
+  },
+
+  async upload(file: Express.Multer.File) {
+    return ProdutosRepository.uploadFile(file)
+  } 
 } 
 
 export default ProdutosService

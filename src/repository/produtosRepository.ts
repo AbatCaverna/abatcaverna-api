@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb'
+import fs from 'fs'
 
 import getStripe from '../providers/stripe'
 import getDatabase from '../util/database'
@@ -62,6 +63,26 @@ const ProdutosRepository = {
     }
 
     return products
+  },
+
+  async uploadFile(file: Express.Multer.File) {
+    const stripe = getStripe()
+    const fileData = fs.readFileSync(file.path)
+
+    const upload = await stripe.files.create({
+      file: {
+        data: fileData,
+        name: file.originalname,
+        type: 'application.octet-stream'
+      },
+      purpose: 'dispute_evidence'
+    })
+
+    const link = await stripe.fileLinks.create({
+      file: upload.id
+    })
+
+    return link.url
   }
 }
 

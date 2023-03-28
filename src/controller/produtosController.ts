@@ -14,6 +14,39 @@ const ProdutosController = {
       console.error(`Error[SERVER](${new Date().toDateString()}): Server error!`, error)
       return res.status(500).json({ message: 'Something went wrong with server', error })
     }
+  },
+
+  async getAllProductsByEmail(req: Request, res: Response) {
+    try {
+      const { email } = req.params
+      const response = await ProdutosService.getAllProducts(email)
+      
+      return res.send({
+        message: 'Sucesso',
+        products: response
+      })
+    } catch (error) {
+      console.error(`Error[SERVER](${new Date().toDateString()}): Server error!`, error)
+      return res.status(500).json({ message: 'Something went wrong with server', error })
+    }
+  },
+
+  async uploadProductFile(req: Request, res: Response) {
+    try {
+      const file = req.file
+
+      if (!file) throw 'Must send a file'
+      
+      const link = await ProdutosService.upload(file)
+      return res.send({
+        message: 'Sucess',
+        data: link
+      })
+    } catch (error) {
+      console.error(`Error[SERVER](${new Date().toDateString()}): Server error!`, error)
+      return res.status(500).json({ message: 'Something went wrong with server', error })
+    }
+    
   }
 }
 
