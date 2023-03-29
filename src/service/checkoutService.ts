@@ -1,5 +1,6 @@
 import UserRepository from '../repository/userRepository'
 import getStripe from '../providers/stripe'
+import UserOrdersRepository from '../repository/userOrdersRepository'
 
 type Checkout = {
   price: string,
@@ -9,6 +10,14 @@ type Checkout = {
 type CheckoutBody = {
   email: string
   line_items: Array<Checkout>
+}
+
+type Product = {
+  price_id: string
+  titulo: string
+  preco: string
+  isIngresso: boolean
+  image: string
 }
 
 const CheckoutService = {
@@ -52,6 +61,10 @@ const CheckoutService = {
 
     console.log('[SERVER]: Stripe checkout session created for user', userFound)
     return stripeCheckoutSession.id
+  },
+
+  async checkout(customerName: string, customerEmail: string, products: Product[]) {
+    await UserOrdersRepository.create(customerEmail, products)
   }
 }
 

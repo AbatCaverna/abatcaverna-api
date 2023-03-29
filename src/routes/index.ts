@@ -7,6 +7,7 @@ import ProdutosController from '../controller/produtosController'
 
 import validateJWT from '../middleware/validateJWT'
 import upload from '../middleware/upload'
+import WebhookController from '../controller/webhookController'
 
 const route = Router()
 
@@ -22,6 +23,8 @@ route.get('/produtos', ProdutosController.getAllProducts)
 route.get('/produtos/:email', validateJWT, ProdutosController.getAllProductsByEmail)
 route.post('/produtos', validateJWT, ProdutosController.createProduct) 
 route.post('/produtos/upload-file', upload, ProdutosController.uploadProductFile)
+
+route.post('/webhooks', WebhookController.webhook)
 
 
 export default route
