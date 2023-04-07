@@ -1,12 +1,18 @@
 import { Job } from '@hokify/agenda'
 
-import { CheckouEmailData } from '../../email'
+import EmailProvider, { CheckouEmailData } from '../../email'
 
 const EmailJobHandler = {
-  sendCheckoutEmail: (job: Job<CheckouEmailData>, done: () => void) => {
+  sendCheckoutEmail: async (job: Job<CheckouEmailData>, done: () => void) => {
     const { data } = job.attrs
     console.log('sending checkout email', data)
-    done()
+    try {
+      await EmailProvider.sendEmailCheckoutComplete(data)
+      done()
+    } catch (error) {
+      console.log('Error sending emails', error)
+    }
+    
   }
 }
 
