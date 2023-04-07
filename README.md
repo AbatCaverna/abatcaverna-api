@@ -37,7 +37,7 @@ E para iniciar a ouvir os comando deve iniciar com ```stripe listen```
 
 ## Background Jobs
 
-Estamos usando o [agendajs]() para fazer as filas e os background jobs, usando como banco o mongodb.
+Estamos usando o [agendajs](https://hokify.github.io/agenda/agenda/6.x/) para fazer as filas e os background jobs, usando como banco o mongodb.
 
 **To-do**
 
