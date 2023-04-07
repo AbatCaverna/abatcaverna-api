@@ -117,7 +117,7 @@ const WebhookController = {
 
             await CheckoutService.checkout(name, email, products)
   
-            await scheduler.completeCheckout({ products, name, email, isIngresso })
+            await scheduler.completeCheckout({ list_items: products, user_name: name, to: email, isIngresso })
           } catch (error) {
             console.log('[SERVER]: Erro handling checkout', error)
             return res.status(500).send(error)

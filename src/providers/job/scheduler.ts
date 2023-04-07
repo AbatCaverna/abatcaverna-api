@@ -1,8 +1,9 @@
 import agenda from './index'
+import { CheckouEmailData } from '../email'
 
 const schedule = {
-  completeCheckout: async (data: unknown) => {
-    await agenda.schedule('in 1 minute', 'checkout.complete', data)
+  completeCheckout: async (data: CheckouEmailData) => {
+    await agenda.schedule('in 1 minute', 'send.email.checkout', data)
   }
 }
 

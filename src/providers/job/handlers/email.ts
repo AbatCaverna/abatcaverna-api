@@ -1,8 +1,6 @@
 import { Job } from '@hokify/agenda'
 
-type CheckouEmailData = {
-  email: string
-}
+import { CheckouEmailData } from '../../email'
 
 const EmailJobHandler = {
   sendCheckoutEmail: (job: Job<CheckouEmailData>, done: () => void) => {
