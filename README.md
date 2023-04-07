@@ -4,11 +4,11 @@
 
 - [x] auth
   - manejar sessões dos usuários, armazenar JWT e criar novas sessões
-- [ ] produtos
+- [x] produtos
   - CRUD produtos no stripe
 - [ ] access
   - verifica código de acesso dos moradores
-- [ ] change-password
+- [x] change-password
   - trocar a senha do morador
 - [ ] recover-password
   - recuperar a senha do morador
@@ -16,9 +16,9 @@
   - CRUD dos moradores
 - [ ] tarefas
   - lista de tarefas no excel da rep
-- [ ] checkout
+- [x] checkout
   - compra no stripe
-- [ ] webhooks
+- [x] webhooks
   - webhooks para verificar ações no stripe
 
 ## Boas leituras
