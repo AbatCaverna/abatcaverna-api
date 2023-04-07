@@ -3,6 +3,8 @@ import sendGrid from '@sendgrid/mail'
 import fs from 'fs'
 import path from 'path'
 
+import ENVIRONMENT from '../util/environments'
+
 type ListItem =  { titulo: string, preco: string }
 
 export type CheckouEmailData = {
@@ -20,7 +22,7 @@ const Email = {
     to,
     isIngresso = false
   }: CheckouEmailData) {
-    const APP_KEY = process.env.SENDGRID_API_KEY
+    const APP_KEY = ENVIRONMENT.sendgrid
 
     if (!APP_KEY) throw 'Missing args, SENDGRID_API_KEY'
 
@@ -146,7 +148,7 @@ const Email = {
 
     console.log('[SERVER]: trying to send email')
     try {
-      const APP_KEY = process.env.SENDGRID_API_KEY
+      const APP_KEY = ENVIRONMENT.sendgrid
 
       if (!APP_KEY) throw 'Missing args, SENDGRID_API_KEY'
 

@@ -1,10 +1,12 @@
+
 import { Agenda } from '@hokify/agenda'
+import environment from '../../util/environments'
 
 import definitions from './definitions'
 
-if (!process.env.MONGODB_URI) throw 'Missing args, MONGODB_URI'
+if (!environment.mongo_uri) throw 'Missing args, MONGODB_URI'
 
-const agenda = new Agenda({ db: { address: process.env.MONGODB_URI, } }) 
+const agenda = new Agenda({ db: { address: environment.mongo_uri, } }) 
 
 agenda
   .on('ready', () => console.log('Agenda started!'))
