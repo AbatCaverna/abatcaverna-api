@@ -34,3 +34,16 @@ Em alguma rotas é necessário uma conexão com o stripe, para isso é necessár
 Para iniciar ela é preciso fazer o login, com o comando ```stripe loing --api-key STRIPE_PRIVATE_KEY```.
 
 E para iniciar a ouvir os comando deve iniciar com ```stripe listen```
+
+## Background Jobs
+
+Estamos usando o [agendajs]() para fazer as filas e os background jobs, usando como banco o mongodb.
+
+**To-do**
+
+- [x] Criar instancia do agenda
+- [ ] Criar jobs de envio de email
+  - [x] Checkout
+  - [ ] Checkout com ingresso
+  - [ ] Novo usuario
+- [ ] Criar job para criar pdf do ingresso
