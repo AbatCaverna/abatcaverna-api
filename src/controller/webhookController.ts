@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
 import { Readable } from 'stream'
 import Stripe from 'stripe'
+
+import scheduler from '../providers/job/scheduler'
 import getStripe from '../providers/stripe'
 import CheckoutService from '../service/checkoutService'
 
@@ -105,17 +107,17 @@ const WebhookController = {
             products.push(item_data)
           }
 
-          // const emailProvider = new Email()
-
           if (!name || !email) {
             return res.status(500).send('Webhook error: $customer not found')
           }
 
           try {
 
+            const isIngresso = products.filter(p => p.isIngresso).length > 0
+
             await CheckoutService.checkout(name, email, products)
   
-            // await emailProvider.sendEmail(products, name, email, isIngresso)
+            await scheduler.completeCheckout({ products, name, email, isIngresso })
           } catch (error) {
             console.log('[SERVER]: Erro handling checkout', error)
             return res.status(500).send(error)
