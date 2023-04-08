@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 
 function validateJWT(req: Request, res: Response, next: NextFunction) {
   const token = req.headers['authorization']
-  const privateKey = process.env.ABAT_TOKEN
+  const privateKey = process.env.NEXTAUTH_SECRET
 
   if(!privateKey || !token) {
     res.status(403).end()

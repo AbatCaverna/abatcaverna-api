@@ -4,11 +4,11 @@
 
 - [x] auth
   - manejar sessões dos usuários, armazenar JWT e criar novas sessões
-- [ ] produtos
+- [x] produtos
   - CRUD produtos no stripe
 - [ ] access
   - verifica código de acesso dos moradores
-- [ ] change-password
+- [x] change-password
   - trocar a senha do morador
 - [ ] recover-password
   - recuperar a senha do morador
@@ -16,9 +16,9 @@
   - CRUD dos moradores
 - [ ] tarefas
   - lista de tarefas no excel da rep
-- [ ] checkout
+- [x] checkout
   - compra no stripe
-- [ ] webhooks
+- [x] webhooks
   - webhooks para verificar ações no stripe
 
 ## Boas leituras
@@ -34,3 +34,22 @@ Em alguma rotas é necessário uma conexão com o stripe, para isso é necessár
 Para iniciar ela é preciso fazer o login, com o comando ```stripe loing --api-key STRIPE_PRIVATE_KEY```.
 
 E para iniciar a ouvir os comando deve iniciar com ```stripe listen```
+
+## Background Jobs
+
+Estamos usando o [agendajs](https://hokify.github.io/agenda/agenda/6.x/) para fazer as filas e os background jobs, usando como banco o mongodb.
+
+**To-do**
+
+- [x] Criar instancia do agenda
+- [ ] Criar jobs de envio de email
+  - [x] Checkout
+  - [ ] Checkout com ingresso
+  - [ ] Novo usuario
+- [ ] Criar job para criar pdf do ingresso
+
+
+## Bugs e Melhorias
+
+- [x] Remover senha do retorno da sessao
+- [ ] Adicionar rota e deletar imagem

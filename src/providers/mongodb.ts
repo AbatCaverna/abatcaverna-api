@@ -1,15 +1,17 @@
 import { Db, MongoClient } from 'mongodb'
 
+import ENVIRONMENT from '../util/environments'
+
 type Connection = {
   database: Db
 }
 
 async function connectMongo(): Promise<Connection> {
-  const URI = process.env.MONGODB_URI
-  const DATABASE_NAME = process.env.MONGODB_DB_NAME
+  const URI = ENVIRONMENT.mongo_uri
+  const DATABASE_NAME = ENVIRONMENT.mongo_db
   const options = {}
   
-  if (!process.env.MONGODB_URI || !URI) {
+  if (!URI) {
     throw new Error('Please add your Mongo URI to .env.local')
   }
 

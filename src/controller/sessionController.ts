@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import jwt from 'jsonwebtoken'
 
 
 import moradoresService from '../service/moradorService'
 import UserService from '../service/userService'
 import returnHashString from '../util/crypto'
+import signUser from '../util/signUser'
 import { Role } from '../util/types'
 
 type Credentials = {
@@ -33,17 +33,16 @@ const SessionController = {
         return res.status(422).send({ message: 'Error'})
       }
 
-      console.log(privateKey)
-
       if (privateKey === undefined) {
         console.error(`Error[SERVER](${new Date().toDateString()}): Must provide a NEXTAUTH_SECRET env var`)
         throw new Error('Must provide a NEXTAUTH_SECRET env var')
       }
 
-      const jwt_token = jwt.sign(morador, privateKey, {
-        expiresIn: 60 * 60 * 24 * 30, // 30 dias
-        algorithm: 'HS512'
-      })
+      const jwt_token = signUser(morador)
+
+      res.setHeader('Authorization', jwt_token)
+
+      delete morador.senha
       
       return res.send({
         message: 'Sucesso',
@@ -64,7 +63,18 @@ const SessionController = {
     try {
       const response = await UserService.createUserIfNotInDB(user)
 
-      return res.status(200).send({ message: 'Sucess', user: response })
+      const jwt_token = signUser(response)
+
+      res.setHeader('Authorization', jwt_token)
+
+      return res.status(200).send({ 
+        message: 'Sucess', 
+        user: {
+          ...response,
+          role: Role.usuario,
+          token: jwt_token
+        }
+      })
       
     } catch (error) {
       console.log(error)
