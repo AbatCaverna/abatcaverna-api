@@ -15,7 +15,7 @@ route.post('/session/morador', SessionController.morador)
 route.post('/session/user', SessionController.user)
 
 route.get('/moradores', validateJWT, MoradoresController.index)
-route.put('/moradores/change-password', MoradoresController.changePassword)
+route.put('/moradores/change-password', validateJWT, MoradoresController.changePassword)
 
 route.post('/checkout', validateJWT, CheckoutController.index)
 

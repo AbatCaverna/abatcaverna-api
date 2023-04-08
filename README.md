@@ -47,3 +47,9 @@ Estamos usando o [agendajs](https://hokify.github.io/agenda/agenda/6.x/) para fa
   - [ ] Checkout com ingresso
   - [ ] Novo usuario
 - [ ] Criar job para criar pdf do ingresso
+
+
+## Bugs e Melhorias
+
+- [x] Remover senha do retorno da sessao
+- [ ] Adicionar rota e deletar imagem

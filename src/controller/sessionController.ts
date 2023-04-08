@@ -41,6 +41,8 @@ const SessionController = {
       const jwt_token = signUser(morador)
 
       res.setHeader('Authorization', jwt_token)
+
+      delete morador.senha
       
       return res.send({
         message: 'Sucesso',
