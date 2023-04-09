@@ -54,7 +54,7 @@ const Email = {
     `
 
     const message: sendGrid.MailDataRequired = {
-      from: 'viniciustprates@gmail.com',
+      from: 'abatcaverna1@gmail.com',
       to: to,
       subject: 'Compra efetuada em ABatCaverna',
       html: html,
@@ -125,7 +125,7 @@ const Email = {
     `
 
     const message: sendGrid.MailDataRequired = {
-      from: 'viniciustprates@gmail.com',
+      from: 'abatcaverna1@gmail.com',
       to: to,
       subject: 'Compra efetuada em ABatCaverna',
       html: html,
@@ -164,6 +164,42 @@ const Email = {
     } finally {
       fs.unlinkSync(dir)
       console.log('[SERVER]: unlink file')
+    }
+  },
+
+  async sendEmailToNewUser({email, name}: { email: string, name: string}) {
+    const APP_KEY = ENVIRONMENT.sendgrid
+
+    if (!APP_KEY) throw 'Missing args, SENDGRID_API_KEY'
+
+    const html = `
+    <html>
+    <head>
+        <title>Email de boas vindas</title>
+    </head>
+    <body>
+      <h1>Olá ${name}! Obrigado por se cadastrar na ABatCaverna!</h1>
+    </body>
+    </html>
+    `
+
+    const message: sendGrid.MailDataRequired = {
+      from: 'abatcaverna1@gmail.com',
+      to: email,
+      subject: 'Bem vindo à ABatCaverna',
+      html: html,
+      text: `Olá ${name}! Obrigado por se cadastrar na ABatCaverna!`
+    } 
+
+    try {
+      sendGrid.setApiKey(APP_KEY)
+      await sendGrid.send(message)
+
+      console.log('[SERVER]: Email sent to', email)
+    } catch (error) {
+      const err = error as any
+      console.error('[SERVER]: Error when trying to send email', err.response.body)
+
     }
   }
 

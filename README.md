@@ -44,8 +44,8 @@ Estamos usando o [agendajs](https://hokify.github.io/agenda/agenda/6.x/) para fa
 - [x] Criar instancia do agenda
 - [ ] Criar jobs de envio de email
   - [x] Checkout
+  - [x] Novo usuario
   - [ ] Checkout com ingresso
-  - [ ] Novo usuario
 - [ ] Criar job para criar pdf do ingresso
 
 

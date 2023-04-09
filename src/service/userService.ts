@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 import UserRespository from '../repository/userRepository'
 import getStripe from '../providers/stripe'
+import schedule from '../providers/job/scheduler'
 
 const UserSchema = z.object({
   name: z.string(),
@@ -28,6 +29,7 @@ const UserService = {
 
         const newUser = await UserRespository.createUser(user.name, user.email, user.image, stripe_customer.id)
         console.log('[SERVER]: Created user in stripe', stripe_customer)
+        await schedule.newUser(user.email, user.name)
 
         return newUser
       }
