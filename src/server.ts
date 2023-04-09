@@ -13,7 +13,15 @@ const app = express()
 app.use(helmet())
 app.use(cors())
 
-app.use(express.json())
+app.use(express.json({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  verify: function (req: any, res, buf) {
+    const url = req.originalUrl
+    if (url.startsWith('/webhooks')) {
+      req.rawBody = buf.toString()
+    }
+  }
+}))
 app.use(express.static('./public'))
 app.use(express.static('./uploads'))
 

@@ -1,22 +1,9 @@
 import { Request, Response } from 'express'
-import { Readable } from 'stream'
 import Stripe from 'stripe'
 
 import scheduler from '../providers/job/scheduler'
 import getStripe from '../providers/stripe'
 import CheckoutService from '../service/checkoutService'
-
-async function buffer(readable: Readable) {
-  const chunks = []
-
-  for await (const chunk of readable) {
-    chunks.push(
-      typeof chunk === 'string' ? Buffer.from(chunk) : chunk
-    )
-  }
-
-  return Buffer.concat(chunks)
-}
 
 const relevantEvents = new Set([
   'checkout.session.completed',
@@ -31,7 +18,6 @@ export const config = {
 const WebhookController = {
   async webhook(req: Request, res: Response) {
     const stripe = getStripe()
-    const buff = await buffer(req)
     const secret = req.headers['stripe-signature']
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
 
@@ -40,7 +26,8 @@ const WebhookController = {
     try {
 
       if (secret && webhookSecret) {
-        event = stripe.webhooks.constructEvent(buff, secret, webhookSecret)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        event = stripe.webhooks.constructEvent((req as any).rawBody, secret, webhookSecret)
 
       } else {
         return res.status(500).send('error with server keys not found')
@@ -122,8 +109,6 @@ const WebhookController = {
             console.log('[SERVER]: Erro handling checkout', error)
             return res.status(500).send(error)
           }
-
-            
 
           break
         }
