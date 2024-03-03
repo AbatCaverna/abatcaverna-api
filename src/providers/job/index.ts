@@ -4,9 +4,9 @@ import { Agenda } from '@hokify/agenda'
 import environment from '../../util/environments'
 import Handlers from './handlers/email'
 
-if (!environment.mongo_uri) throw 'Missing args, MONGODB_URI'
+if (!environment.MONGO_URI) throw 'Missing args, MONGODB_URI'
 
-const agenda = new Agenda({ db: { address: environment.mongo_uri } }) 
+const agenda = new Agenda({ db: { address: environment.MONGO_URI } })
 
 // define schedulers
 agenda.define('send.email.checkout', Handlers.sendCheckoutEmail)

@@ -7,10 +7,10 @@ type Connection = {
 }
 
 async function connectMongo(): Promise<Connection> {
-  const URI = ENVIRONMENT.mongo_uri
-  const DATABASE_NAME = ENVIRONMENT.mongo_db
+  const URI = ENVIRONMENT.MONGO_URI
+  const DATABASE_NAME = ENVIRONMENT.MONGO_DB
   const options = {}
-  
+
   if (!URI) {
     throw new Error('Please add your Mongo URI to .env.local')
   }
@@ -18,7 +18,7 @@ async function connectMongo(): Promise<Connection> {
   if (!DATABASE_NAME) {
     throw new Error('Please add your Mongo Database name to .env.local')
   }
-  
+
   // Export a module-scoped MongoClient promise. By doing this in a
   // separate module, the client can be shared across functions.
   const client = new MongoClient(URI, options)
