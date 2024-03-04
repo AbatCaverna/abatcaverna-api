@@ -1,4 +1,3 @@
-
 import { Agenda } from '@hokify/agenda'
 
 import environment from '../../util/environments'
@@ -13,9 +12,5 @@ agenda.define('send.email.checkout', Handlers.sendCheckoutEmail)
 agenda.define('send.email.user', Handlers.sendNewUserEmail)
 
 agenda.start()
-
-agenda
-  .on('ready', () => console.log('Agenda started!'))
-  .on('error', () => console.log('Agenda conn error!'))
 
 export default agenda

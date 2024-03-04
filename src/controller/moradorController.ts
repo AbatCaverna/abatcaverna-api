@@ -1,12 +1,13 @@
 import { Request, Response } from 'express'
+import { z } from 'zod'
 
 import moradoresService from '../service/moradorService'
 
-const MoradoresController = {  
+const MoradoresController = {
   async index(req: Request, res: Response) {
     try {
       const response = await moradoresService.show()
-      
+
       return res.send({
         message: response ? 'Sucesso' : 'Erro',
         moradores: response
@@ -16,12 +17,12 @@ const MoradoresController = {
       return res.status(500).json({ message: 'Something went wrong with server', error })
     }
   },
-  
+
   async changePassword(req: Request, res: Response) {
     const { name, new_password } = req.body
     try {
       await moradoresService.changePassword(name, new_password)
-      
+
       return res.send({
         message: 'Sucesso'
       })
@@ -29,7 +30,23 @@ const MoradoresController = {
       console.error(`Error[SERVER](${new Date().toDateString()}): Server error!`, error)
       return res.status(500).json({ message: 'Something went wrong with server', error })
     }
+  },
+
+  async create(req: Request, res: Response) {
+    try {
+      const morador = req.body
+      console.log(morador)
+      return res.send('Deu certo')
+
+    } catch (error) {
+
+      return res.status(500).json({ message: 'Something went wrong with server', error })
+    }
   }
 }
+
+const CreateMoradorSchema = z.object({
+  name: z.string(),
+})
 
 export default MoradoresController

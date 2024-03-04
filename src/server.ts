@@ -15,7 +15,7 @@ app.use(cors())
 
 app.use(express.json({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  verify: function (req: any, res, buf) {
+  verify: function(req: any, res, buf) {
     const url = req.originalUrl
     if (url.startsWith('/webhooks')) {
       req.rawBody = buf.toString()
@@ -31,3 +31,5 @@ app.listen(
   process.env.PORT || 3333,
   () => console.log(`server running on port ${process.env.PORT || 3333}`)
 )
+
+export default app

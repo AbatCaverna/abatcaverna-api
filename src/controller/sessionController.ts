@@ -18,19 +18,19 @@ const SessionController = {
     const privateKey = process.env.NEXTAUTH_SECRET
     try {
       if (!username) {
-        return res.status(422).send({ message: 'Missing arguments'})
+        return res.status(422).send({ message: 'Missing arguments' })
       }
 
       const morador = await moradoresService.showOne(username)
 
       if (!morador) {
         console.info(`Warning[SERVER](${new Date().toDateString()}): User not found!`)
-        return res.status(400).send({ message: 'User does not found'})
+        return res.status(400).send({ message: 'User does not found' })
       }
-      
+
       if (returnHashString(password) !== morador.senha) {
         console.info(`Warning[SERVER](${new Date().toDateString()}): User incorrect!`)
-        return res.status(422).send({ message: 'Error'})
+        return res.status(422).send({ message: 'Error' })
       }
 
       if (privateKey === undefined) {
@@ -43,7 +43,7 @@ const SessionController = {
       res.setHeader('Authorization', jwt_token)
 
       delete morador.senha
-      
+
       return res.send({
         message: 'Sucesso',
         user: {
@@ -53,7 +53,7 @@ const SessionController = {
         }
       })
     } catch (error) {
-      return res.status(500).send({ message: 'Something went wrong', error})
+      return res.status(500).send({ message: 'Something went wrong', error })
     }
 
   },
@@ -67,20 +67,20 @@ const SessionController = {
 
       res.setHeader('Authorization', jwt_token)
 
-      return res.status(200).send({ 
-        message: 'Sucess', 
+      return res.status(200).send({
+        message: 'Sucess',
         user: {
           ...response,
           role: Role.usuario,
           token: jwt_token
         }
       })
-      
+
     } catch (error) {
       console.log(error)
-      return res.status(500).send({ message: 'Something went wrong', error})
+      return res.status(500).send({ message: 'Something went wrong', error })
     }
-    
+
   }
 }
 
