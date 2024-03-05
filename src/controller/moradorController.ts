@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { z } from 'zod'
+import { z, ZodError } from 'zod'
 
 import moradoresService from '../service/moradorService'
 
@@ -35,18 +35,43 @@ const MoradoresController = {
   async create(req: Request, res: Response) {
     try {
       const morador = req.body
-      console.log(morador)
-      return res.send('Deu certo')
+      const file = req.file as any
+      if (!file) throw new Error('Missing file')
 
+      const moradorEntity = CreateMoradorSchema.parse({
+        ...morador,
+        ano_entrada: +morador.ano_entrada,
+        imagem: file.location,
+      })
+
+      const newMorador = await moradoresService.addMorador(moradorEntity)
+
+      return res.json({
+        message: 'Sucesso!',
+        user: newMorador,
+      })
     } catch (error) {
 
-      return res.status(500).json({ message: 'Something went wrong with server', error })
+      if (error instanceof ZodError) {
+        return res
+          .status(400)
+          .json({ message: 'Bad Request', error })
+      }
+
+      return res.status(500).json({ message: 'Internal Server Error', error })
     }
   }
 }
 
 const CreateMoradorSchema = z.object({
-  name: z.string(),
+  nome: z.string(),
+  apelido: z.string(),
+  ano_entrada: z.number(),
+  curso: z.string(),
+  imagem: z.string(),
+  instagram: z.string(),
 })
+
+export type MoradorDTO = z.infer<typeof CreateMoradorSchema>
 
 export default MoradoresController
