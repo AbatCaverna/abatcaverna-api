@@ -1,17 +1,9 @@
-import MoradoresRepository from '../repository/moradorRepository'
-import returnHashString from '../util/crypto'
-import {
-  ListBucketsCommand,
-  ListObjectsV2Command,
-  PutObjectCommand,
-  PutObjectCommandInput,
-  S3Client,
-} from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import S3 from '../providers/storage'
-import fs from 'fs'
+import { ObjectId } from 'mongodb'
+
 import { MoradorDTO } from '../controller/moradorController'
 import Morador from '../models/morador'
+import returnHashString from '../util/crypto'
+import MoradoresRepository from '../repository/moradorRepository'
 
 const MoradoresService = {
   async show() {
@@ -51,44 +43,47 @@ const MoradoresService = {
     }
   },
 
-  async uploadImage(file: Express.Multer.File) {
-    try {
-      const parms = new PutObjectCommand({
-        Bucket: 'abatcaverna',
-        Key: file.originalname,
-        ContentType: file.mimetype,
-        ContentLength: file.size,
-        Body: file.buffer,
-      })
-      const response = await S3.send(parms)
-      console.log(response)
+  async addMorador(morador: MoradorDTO) {
+    const toInsert = new Morador(
+      morador.nome,
+      morador.apelido,
+      morador.ano_entrada,
+      morador.curso,
+      morador.imagem,
+      morador.instagram,
+      0,
+      0,
+      returnHashString('123456')
+    )
 
-    } catch (error) {
-      throw new Error('Could not upload image')
-    }
+    const inserted = await MoradoresRepository.create(toInsert)
+    return inserted
 
   },
 
-  async addMorador(morador: MoradorDTO) {
-    try {
-      const toInsert = new Morador(
-        morador.nome,
-        morador.apelido,
-        morador.ano_entrada,
-        morador.curso,
-        morador.imagem,
-        morador.instagram,
-        0,
-        0,
-        returnHashString('123456')
-      )
+  async updateOne(id: string, morador: MoradorDTO) {
+    const oldMorador = await MoradoresRepository.getOneMorador(id)
+    const newMorador = new Morador(
+      morador.nome,
+      morador.apelido,
+      morador.ano_entrada,
+      morador.curso,
+      morador.imagem,
+      morador.instagram,
+      // coisas que nao podem ser atualizadas por aqui
+      oldMorador.cachaca_para_tomar,
+      oldMorador.cachaca_ja_tomada,
+      oldMorador.senha,
+      oldMorador._id,
+    )
 
-      const inserted = await MoradoresRepository.create(toInsert)
-      return inserted
-    } catch (error) {
-      throw error
-    }
+    const inserted = await MoradoresRepository.updateOne(newMorador)
+    return inserted
 
+  },
+
+  async deleteOne(id: string) {
+    return MoradoresRepository.deleteOne(new ObjectId(id))
   }
 
 }

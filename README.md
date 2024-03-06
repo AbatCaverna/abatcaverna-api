@@ -52,4 +52,5 @@ Estamos usando o [agendajs](https://hokify.github.io/agenda/agenda/6.x/) para fa
 ## Bugs e Melhorias
 
 - [x] Remover senha do retorno da sessao
-- [ ] Adicionar rota e deletar imagem
+- [ ] Crud de moradores
+- [ ] Remover stripe e adicionar produto no nosso banco

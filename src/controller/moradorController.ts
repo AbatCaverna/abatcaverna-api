@@ -60,7 +60,50 @@ const MoradoresController = {
 
       return res.status(500).json({ message: 'Internal Server Error', error })
     }
-  }
+  },
+
+  async delete(req: Request, res: Response) {
+    try {
+      const { id } = req.params
+      await moradoresService.deleteOne(id)
+      return res.status(204).send()
+    } catch (error) {
+      if ((error as Error).message) {
+        return res.status(400).json({ message: 'Internal Server Error', error: (error as Error).message })
+      }
+
+      return res.status(500).json({ message: 'Internal Server Error', error })
+    }
+  },
+
+  async update(req: Request, res: Response) {
+    try {
+      const { id } = req.params
+      const morador = req.body
+
+      const moradorEntity = CreateMoradorSchema.parse({
+        ...morador,
+        ano_entrada: +morador.ano_entrada,
+      })
+
+      const newMorador = await moradoresService.updateOne(id, moradorEntity)
+
+      return res.json({
+        message: 'Sucesso!',
+        user: newMorador,
+      })
+    } catch (error) {
+
+      if (error instanceof ZodError) {
+        return res
+          .status(400)
+          .json({ message: 'Bad Request', error })
+      }
+
+      return res.status(500).json({ message: 'Internal Server Error', error })
+    }
+  },
+
 }
 
 const CreateMoradorSchema = z.object({
