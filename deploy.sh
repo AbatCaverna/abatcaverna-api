@@ -11,5 +11,5 @@ echo "Running build.."
 npm run build
 echo "Restarting server.."
 pm2 restart api
-service nginx restart
+systemctl restart nginx
 echo "Success!"
