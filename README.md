@@ -1,5 +1,77 @@
 # abatcaverna-api
 
+## Pré-requisitos
+
+Antes de começar, certifique-se de atender aos seguintes requisitos:
+
+- [Node.js](https://nodejs.org/) instalado em sua máquina
+- [npm](https://www.npmjs.com/) (Gerenciador de Pacotes Node) 
+
+## Primeiros Passos
+
+Siga estes passos para configurar e executar o projeto localmente:
+
+1. **Clone o repositório:**
+
+   ```bash
+   git clone https://github.com/abatcaverna/abatcaverna-api.git
+   ```
+
+2. **Navegue até o diretório do projeto:**
+
+   ```bash
+   cd abatcaverna-api
+   ```
+
+3. **Instale as dependências:**
+
+   ```bash
+   npm install
+   ```
+
+4. **Configure as Variáveis de Ambiente:**
+
+   Crie um arquivo `.env` na raiz do projeto com base no modelo `.env.example` fornecido. Modifique os valores conforme necessário.
+
+5. **Compile o código TypeScript:**
+
+   ```bash
+   npm run build
+   ```
+
+6. **Execute o aplicativo:**
+
+   ```bash
+   npm start
+   ```
+   O aplicativo estará acessível em [http://localhost:3333](http://localhost:3333) por padrão. Você pode modificar a porta no arquivo `.env`.
+
+## Desenvolvimento
+
+Para iniciar o servidor de desenvolvimento com recarregamento automático de código:
+
+```bash
+npm run dev
+```
+
+Este comando utiliza o [nodemon](https://nodemon.io/) para observar alterações nos arquivos TypeScript e reiniciar o servidor conforme necessário.
+
+## Testes
+
+Para executar os testes, utilize o seguinte comando:
+
+```bash
+npm test
+```
+
+## Estilo de Código
+
+Utilizamos [ESLint](https://eslint.org/) para linting de código e [Prettier](https://prettier.io/) para formatação de código. Certifique-se de executar o seguinte comando antes de enviar uma solicitação pull:
+
+```bash
+npm run lint
+```
+
 ## Rotas
 
 - [x] auth
