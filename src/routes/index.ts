@@ -4,6 +4,8 @@ import MoradoresController from '../controller/moradorController'
 import SessionController from '../controller/sessionController'
 import CheckoutController from '../controller/checkoutController'
 import ProdutosController from '../controller/produtosController'
+import CachacaController from '../controller/cachacaController'
+
 
 import validateJWT from '../middleware/validateJWT'
 import upload from '../middleware/upload'
@@ -25,6 +27,12 @@ route.post('/produtos', validateJWT, ProdutosController.createProduct)
 route.post('/produtos/upload-file', upload, ProdutosController.uploadProductFile)
 
 route.post('/webhooks', WebhookController.webhook)
+
+route.post('/cachaca',CachacaController.index)
+route.get('/cachaca',CachacaController.index)
+route.put('/cachaca',CachacaController.index)
+
+
 
 
 export default route

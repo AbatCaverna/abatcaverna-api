@@ -8,10 +8,13 @@ class Morador {
     public curso: string,
     public imagem: string,
     public instagram: string,
-    public cachaca_para_tomar: number,
-    public cachaca_ja_tomada: number,
+    public oficial: boolean,
+    public total_cachaca: number,
+    public formado: boolean,
+    public calouro: boolean,
     public senha?: string,
     public _id?: ObjectId,
+    public ano_saida?: number
   ) {}
 }
 
