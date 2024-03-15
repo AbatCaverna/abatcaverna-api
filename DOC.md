@@ -1,10 +1,95 @@
-# Documentacao das rotas
+# Documentação das rotas
+
+| Métods REST    |                                                |
+|----------------|----------------------------------------------- |
+| Moradores      |                                                |
+|----------------|----------------------------------------------- |
+| GET            |  [/moradores](#get-moradores) 
+| POST           |  [/moradores](#post-moradores) 
+| PUT            |  [/moradores/:id](#put-moradoresid) 
+| DELETE         |  [/moradores/:id](#delete-moradoresid) 
+|----------------|----------------------------------------------- |
+| Session        |                                                |
+|----------------|----------------------------------------------- |
+| POST            |  [/session/moradores](#sessions-moradores) 
+| POST            |  [/session/user](#sessions-user) 
+
+## Session
+
+### <a id="sessions-moradores"></a>POST: /session/morador
+
+This route is responsible for authenticating a morador based on the provided credentials.
+- Body:
+  - `credentials`: Object containing the user credentials.
+- Usage:
+    ```bash
+    curl -X POST http://api.abatcaverna.com/session/morador \
+    -H "Content-Type: application/json" \
+    -d '{
+      "credentials": {
+        "username": "Jon Doe",
+        "password: "jon123"
+      }
+    }'
+    ```
+- Response
+    - Status Code: 200
+    - Response Body:
+      ```json
+      {
+        // Authentication result details
+      }
+      ```
+    - Status Code: 500
+      - Response Body:
+        ```json
+        {
+          "message": "Internal Server Error",
+          "error": { 
+            // Details of the server error
+          }
+        }
+        ```
+
+### <a id="sessions-user"></a>POST: /session/user
+
+This route is responsible for authenticating a user based on the provided credentials.
+- Body:
+  - `credentials`: Object containing the user credentials.
+- Usage:
+    ```bash
+    curl -X POST http://api.abatcaverna.com/session/user \
+    -H "Content-Type: application/json" \
+    -d '{
+      "credentials": {
+        // User credentials
+      }
+    }'
+    ```
+- Response
+    - Status Code: 200
+    - Response Body:
+      ```json
+      {
+        // Authentication result details
+      }
+      ```
+    - Status Code: 500
+      - Response Body:
+        ```json
+        {
+          "message": "Internal Server Error",
+          "error": { 
+            // Details of the server error
+          }
+        }
+        ```
 
 ## Moradores
 
-### GET /moradores 
+### <a id="get-moradores"></a>GET /moradores 
 
-This route is responsible for retrieving a list of all moradores in the system.
+This route is responsible for retrieving a list of all residents in the system.
 
 - Usage
     ```bash
@@ -38,7 +123,7 @@ This route is responsible for retrieving a list of all moradores in the system.
         }
         ```
 
-### POST /moradores
+### <a id="post-moradores"></a>POST /moradores
 This route is responsible for creating a new "morador" (resident) in the system.
 
 - Body:
@@ -95,7 +180,7 @@ This route is responsible for creating a new "morador" (resident) in the system.
               }
         }
         ```
-### PUT /moradores/:id
+### <a id="put-moradoresid"></a>PUT /moradores/:id
 Update a specific morador by ID
 - Request Parameters:
     - id: string (required) - The ID of the morador to update
@@ -144,7 +229,7 @@ Update a specific morador by ID
       }
     }
 
-### DELETE: /moradores/:id 
+### <a id="delete-moradoresid"></a>DELETE: /moradores/:id
 
 This route is responsible for deleting a specific morador from the system.
 
