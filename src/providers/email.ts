@@ -5,7 +5,7 @@ import path from 'path'
 
 import ENVIRONMENT from '../util/environments'
 
-type ListItem =  { titulo: string, preco: string }
+type ListItem = { titulo: string, preco: string }
 
 export type CheckouEmailData = {
   list_items: ListItem[]
@@ -15,14 +15,14 @@ export type CheckouEmailData = {
   fileName?: string
 }
 
-const Email = {  
+const Email = {
   async sendEmailCheckoutComplete({
     list_items,
     user_name,
     to,
     isIngresso = false
   }: CheckouEmailData) {
-    const APP_KEY = ENVIRONMENT.sendgrid
+    const APP_KEY = ENVIRONMENT.SENDGRID
 
     if (!APP_KEY) throw 'Missing args, SENDGRID_API_KEY'
 
@@ -31,7 +31,7 @@ const Email = {
     list_items.forEach((item) => {
       listItem += `<li> ${item.titulo} - ${item.preco}</li>`
     })
-  
+
     listItem += '</ul>'
 
     const html = `
@@ -63,7 +63,7 @@ const Email = {
       Você realizou uma compra dos seguintes produtos
       ${listItem}
       Para receber seu produto, entre em contato com algum morador da República!`
-    } 
+    }
 
     try {
 
@@ -92,11 +92,11 @@ const Email = {
 
     try {
       attach = fs.readFileSync(dir).toString('base64')
-      
+
     } catch (error) {
       throw new Error('Error when trying to open file')
     }
-    
+
     let listItem = '<ul>'
 
     list_items.forEach((item) => {
@@ -144,11 +144,11 @@ const Email = {
           disposition: 'attachment',
         },
       ]
-    } 
+    }
 
     console.log('[SERVER]: trying to send email')
     try {
-      const APP_KEY = ENVIRONMENT.sendgrid
+      const APP_KEY = ENVIRONMENT.SENDGRID
 
       if (!APP_KEY) throw 'Missing args, SENDGRID_API_KEY'
 
@@ -156,7 +156,7 @@ const Email = {
       await sendGrid.send(message)
 
       console.log('[SERVER]: Email sent to', to)
-      
+
     } catch (error) {
       const err = error as any
       console.error('[SERVER]: Error when trying to send email', err.response.body)
@@ -167,8 +167,8 @@ const Email = {
     }
   },
 
-  async sendEmailToNewUser({email, name}: { email: string, name: string}) {
-    const APP_KEY = ENVIRONMENT.sendgrid
+  async sendEmailToNewUser({ email, name }: { email: string, name: string }) {
+    const APP_KEY = ENVIRONMENT.SENDGRID
 
     if (!APP_KEY) throw 'Missing args, SENDGRID_API_KEY'
 
@@ -189,7 +189,7 @@ const Email = {
       subject: 'Bem vindo à ABatCaverna',
       html: html,
       text: `Olá ${name}! Obrigado por se cadastrar na ABatCaverna!`
-    } 
+    }
 
     try {
       sendGrid.setApiKey(APP_KEY)
