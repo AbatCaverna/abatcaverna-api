@@ -1,4 +1,6 @@
 import { Router } from 'express'
+import fs from 'fs'
+import { marked } from 'marked'
 
 import MoradoresController from '../controller/moradorController'
 import SessionController from '../controller/sessionController'
@@ -10,6 +12,16 @@ import upload from '../middleware/upload'
 import WebhookController from '../controller/webhookController'
 
 const route = Router()
+
+route.get('/docs', (req, res) => {
+  fs.readFile('./DOC.md', (err, data) => {
+    if (err) {
+      res.send('File not found')
+    } else {
+      res.send(marked(data.toString()))
+    }
+  })
+})
 
 route.post('/session/morador', SessionController.morador)
 route.post('/session/user', SessionController.user)
