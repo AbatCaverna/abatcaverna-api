@@ -93,8 +93,10 @@ This route is responsible for retrieving a list of all residents in the system.
 
 - Usage
     ```bash
-    curl -X GET http://api.abatcaverna.com/moradores
+    curl -X GET http://api.abatcaverna.com/moradores?moradorId=
     ```
+- Query:
+    - `moradorId`: ObjectId. Retorna a lista com apenas o morador do id especificado
 - Response
     - Status Code: 200
     - Response Body:
