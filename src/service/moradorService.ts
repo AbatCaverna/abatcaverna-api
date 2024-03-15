@@ -6,9 +6,9 @@ import returnHashString from '../util/crypto'
 import MoradoresRepository from '../repository/moradorRepository'
 
 const MoradoresService = {
-  async show() {
+  async show(id?: ObjectId) {
     try {
-      const moradores = await MoradoresRepository.getAllMoradores()
+      const moradores = await MoradoresRepository.getAllMoradores(id)
 
       return moradores
     } catch (error) {

@@ -5,15 +5,20 @@ import getDatabase from '../util/database'
 
 const MoradoresRepository = {
 
-  async getAllMoradores(): Promise<Morador[]> {
+  async getAllMoradores(id?: ObjectId): Promise<Morador[]> {
     try {
       const _database = await getDatabase()
 
       const moradores = (await _database
         .collection('moradores')
-        .find({ cachaca_para_tomar: { $exists: true } }) // retira selina dos moradores
-        .sort({ cachaca_ja_tomada: -1 }) // ordenas pelos q tomaram mais cachaca
-        .toArray()) as Morador[]
+        .find({
+          $and: [
+            { cachaca_para_tomar: { $exists: true } },
+            { _id: id !== undefined ? id : { $exists: true } }
+          ]
+        })
+        .sort({ cachaca_ja_tomada: -1 })
+        .toArray()) as Morador[];
 
       return moradores
     } catch (error) {

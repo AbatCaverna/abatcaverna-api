@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { ObjectId } from 'mongodb'
 import { z, ZodError } from 'zod'
 
 import moradoresService from '../service/moradorService'
@@ -6,7 +7,10 @@ import moradoresService from '../service/moradorService'
 const MoradoresController = {
   async index(req: Request, res: Response) {
     try {
-      const response = await moradoresService.show()
+      const { moradorId } = req.query
+      const morador = MoradorIdSchema.parse(moradorId)
+      const id = moradorId ? new ObjectId(morador) : undefined
+      const response = await moradoresService.show(id)
 
       return res.send({
         message: response ? 'Sucesso' : 'Erro',
@@ -14,6 +18,13 @@ const MoradoresController = {
       })
     } catch (error) {
       console.error(`Error[SERVER](${new Date().toDateString()}): Server error!`, error)
+
+      if (error instanceof ZodError) {
+        return res
+          .status(400)
+          .json({ message: 'Bad Request', error })
+      }
+
       return res.status(500).json({ message: 'Something went wrong with server', error })
     }
   },
@@ -114,6 +125,27 @@ const CreateMoradorSchema = z.object({
   imagem: z.string(),
   instagram: z.string(),
 })
+
+const MoradorIdSchema = z.string().refine((data) => {
+  // Check if the data is a string of 12 bytes
+  if (/^[0-9a-fA-F]{24}$/.test(data)) {
+    return true
+  }
+
+  // Check if the data is a string of 24 hex characters
+  if (/^[0-9a-fA-F]{24}$/.test(data)) {
+    return true
+  }
+
+  // Check if the data is an integer
+  if (!isNaN(+data) && Number.isInteger(+data)) {
+    return true
+  }
+
+  return false
+}, {
+  message: 'Must be a ObjectId. A string of 12 bytes, a string of 24 hex characters, or an integer',
+}).optional()
 
 export type MoradorDTO = z.infer<typeof CreateMoradorSchema>
 
