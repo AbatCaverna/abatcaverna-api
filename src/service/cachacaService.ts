@@ -1,42 +1,50 @@
 import CachacaRepository from '../repository/cachacaRepository'
-import returnHashString from '../util/crypto'
+import MoradoresRepository from '../repository/moradorRepository'
+import Cachaca from '../models/cachaca'
+
 
 const cachacaService = {
-  async show() {
+  
+  async addMoradorAoRank(ano: number) {
     try {
-      const moradores = await CachacaRepository.getAllMoradores()
-      return moradores
-    } catch (error) {
-      throw new Error('Erro no servidor')
-    }
+      const morador = await MoradoresRepository.getAllMoradores_oficiais()
 
-  },
-
-  async showOne(name: string) {
-    try {
-      const moradores = await CachacaRepository.getMorador(name)
-    
-      return moradores
-    } catch (error) {
-      throw new Error('Erro no servidor')
-    }
-  },
-
-  async changePassword(name: string, new_password: string) {
-    try {
-      const morador = await CachacaRepository.getMorador(name)
-      
       if (!morador) {
         throw new Error('User not found')
       }
+      for (const idMorador of morador) {
 
-      const new_password_hash = returnHashString(new_password)
+        // Verificar se já existe um registro para o morador no ano fornecido
+        const existente = await CachacaRepository.verificarRegistroExistente( idMorador._id, ano-1)
+        
+        if (!idMorador._id) throw new Error('There is no ID')
+        
+        if (!existente) {
 
-      await CachacaRepository.changePassword(name, new_password_hash)
+          const toInsert = new Cachaca(
+            idMorador._id,
+            0,
+            0,
+            ano,
+          )
+          await CachacaRepository.addMoradorAoRankCachaca(toInsert)
+
+        } else {
+          const toInsert = new Cachaca(
+            idMorador._id,
+            existente.cachaca_para_tomar,
+            0,
+            ano,
+          )
+          await CachacaRepository.addMoradorAoRankCachaca(toInsert)
+        }
+      }
+
     } catch (error) {
-      throw new Error('Could not change password')
+      throw new Error('Could not create rank')
     }
-  }
+  },
+
 
 }
 

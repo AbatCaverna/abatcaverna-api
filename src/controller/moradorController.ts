@@ -124,6 +124,10 @@ const CreateMoradorSchema = z.object({
   curso: z.string(),
   imagem: z.string(),
   instagram: z.string(),
+  oficial:z.boolean(),
+  total_cachaca:z.number(),
+  formado:z.boolean(),
+  calouro:z.boolean(),
 })
 
 const MoradorIdSchema = z.string().refine((data) => {

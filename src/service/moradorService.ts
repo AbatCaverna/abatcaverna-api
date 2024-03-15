@@ -51,8 +51,10 @@ const MoradoresService = {
       morador.curso,
       morador.imagem,
       morador.instagram,
+      true,
       0,
-      0,
+      false,
+      true,
       returnHashString('123456')
     )
 
@@ -70,9 +72,11 @@ const MoradoresService = {
       morador.curso,
       morador.imagem,
       morador.instagram,
+      morador.oficial,
+      morador.total_cachaca,
+      morador.formado,
+      morador.calouro,
       // coisas que nao podem ser atualizadas por aqui
-      oldMorador.cachaca_para_tomar,
-      oldMorador.cachaca_ja_tomada,
       oldMorador.senha,
       oldMorador._id,
     )

@@ -18,48 +18,13 @@ const MoradoresRepository = {
           ]
         })
         .sort({ cachaca_ja_tomada: -1 })
-        .toArray()) as Morador[];
+        .toArray()) as Morador[]
 
       return moradores
     } catch (error) {
       throw new Error(`Something wrong with server, ${error}`)
     }
 
-  },
-
-  async addCachaca(morador_id: string): Promise<void> {
-    try {
-      const _database = await getDatabase()
-      // define uma nova cachaca para um morador
-      await _database.collection('moradores').updateOne(
-        {
-          _id: new ObjectId(morador_id),
-        },
-        { $inc: { cachaca_para_tomar: 1 } }
-      )
-    } catch (error) {
-      throw new Error(`Something wrong with server, ${error}`)
-    }
-
-  },
-
-  async updateCachaca(morador_id: string, cachaca_ja_tomada: number, cachaca_para_tomar?: number) {
-    try {
-      const _database = await getDatabase()
-      await _database.collection('moradores').updateOne(
-        { _id: new ObjectId(morador_id) },
-        {
-          $inc: cachaca_para_tomar ? {
-            cachaca_para_tomar: cachaca_para_tomar,
-            cachaca_ja_tomada: cachaca_ja_tomada
-          } : {
-            cachaca_ja_tomada: cachaca_ja_tomada
-          }
-        }
-      )
-    } catch (error) {
-      throw new Error(`Something wrong with server, ${error}`)
-    }
   },
 
   async getOneMorador(morador_id: string): Promise<Morador> {
@@ -96,7 +61,6 @@ const MoradoresRepository = {
     } catch (error) {
       throw new Error(`Something wrong with server, ${error}`)
     }
-
   },
 
   async changePassword(name: string, new_password: string) {
@@ -134,7 +98,29 @@ const MoradoresRepository = {
     } catch (error) {
       throw new Error(`Something wrong with database, ${error}`)
     }
-  }
+  },
+
+  async getAllMoradores_oficiais(id?: ObjectId): Promise<Morador[]> {
+    try {
+      const _database = await getDatabase()
+        
+      const moradores_oficiais = (await _database
+        .collection('morador')
+        .find({
+          $and:[
+            { oficial:  true }, // retira moradores que não estao na casa oficialmente 
+            { _id: id !== undefined ? id : { $exists: true } }
+          ]
+        })
+        .toArray()) as Morador[]
+
+      return moradores_oficiais
+    } catch (error) {
+      throw new Error(`Something wrong with server, ${error}`)
+    }
+    
+  },
+
 }
 
 export default MoradoresRepository
