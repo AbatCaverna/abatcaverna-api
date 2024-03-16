@@ -41,6 +41,19 @@ route.post('/produtos', validateJWT, ProdutosController.createProduct)
 route.post('/produtos/upload-file', upload('photo'), ProdutosController.uploadProductFile)
 
 route.post('/webhooks', WebhookController.webhook)
+route.get('/healthcheck', async (req, res) => {
+  const check = {
+    uptime: process.uptime(),
+    timestamp: Date.now(),
+    message: 'Server Running!'
+  }
 
+  try {
+    res.send(check)
+  } catch (error) {
+    check.message = error as any
+    res.status(503).send(check)
+  }
+})
 
 export default route
