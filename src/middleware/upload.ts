@@ -1,5 +1,7 @@
 import multer, { FileFilterCallback } from 'multer'
+import multers3 from 'multer-s3'
 import { Request } from 'express'
+import clients3 from '../providers/storage'
 
 function filter(req: Request, file: Express.Multer.File, cb: FileFilterCallback) {
   if (file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg') {
@@ -13,6 +15,22 @@ function filter(req: Request, file: Express.Multer.File, cb: FileFilterCallback)
   }
 }
 
-const upload = multer({ dest: 'uploads/', fileFilter: filter })
+const upload = multer({
+  storage: multers3({
+    s3: clients3,
+    bucket: 'abatcaverna',
+    acl: 'public-read',
+    metadata: (req, file, cp) => cp(null, { fieldname: file.fieldname }),
+    key: (req, file, cp) => {
+      const fileName = `${Date.now()}_${file.filename}_${file.originalname}`
+      cp(null, fileName)
+    }
+  }),
+  fileFilter: filter
+})
 
-export default upload.single('photo')
+const exportUpload = (fieldName: string) => {
+  return upload.single(fieldName)
+}
+
+export default exportUpload

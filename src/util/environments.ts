@@ -1,12 +1,20 @@
 import * as dotenv from 'dotenv'
+import { z } from 'zod'
 dotenv.config()
 
-const ENVIRONMENT = {
-  env: process.env.NODE_ENV,
-  mongo_uri: process.env.MONGODB_URI,
-  mongo_db: process.env.MONGODB_DB_NAME,
-  stripe_private_key: process.env.STRIPE_PRIVATE_KEY,
-  sendgrid: process.env.SENDGRID_API_KEY
-}
+const EnvironmentSchema = z.object({
+  ENV: z.string(),
+  MONGO_URI: z.string(),
+  MONGO_DB: z.string(),
+  STRIPE_PRIVATE_KEY: z.string(),
+  SENDGRID: z.string(),
+  CLOUDFARE_R2_URI: z.string(),
+  CLOUDFARE_TOKEN: z.string(),
+  CLOUDFARE_ID: z.string(),
+  CLOUDFARE_SECRET: z.string(),
+})
 
-export default ENVIRONMENT
+// Validate the environment variables against the schema
+const env = EnvironmentSchema.parse(process.env)
+console.log('Environment variables are valid.')
+export default env
