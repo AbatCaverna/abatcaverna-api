@@ -5,11 +5,13 @@ import cachacaService from '../service/cachacaService'
 const CachacaController = {  
   async index(req: Request, res: Response) {
     try {
-      const response = await cachacaService.show()
-      
+      const ano = req.body
+
+      const response = await cachacaService.addMoradorAoRank(ano)
+
       return res.send({
-        message: response ? 'Sucesso' : 'Erro',
-        moradores: response
+        message: 'Sucesso',
+        rank:response
       })
     } catch (error) {
       console.error(`Error[SERVER](${new Date().toDateString()}): Server error!`, error)
