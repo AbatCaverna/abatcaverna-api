@@ -120,7 +120,36 @@ const MoradoresRepository = {
     }
     
   },
-
+  async updateEvolvesVeteran(morador_id:ObjectId) {
+    try{
+      const _database = await getDatabase()
+      await _database
+        .collection('moradores')
+        .updateOne({ _id: morador_id }, { calouro: false})
+    }catch(error){
+      throw new Error(`Something wrong with server, ${error}`)
+    }
+  },
+  async upadteNotOfficial(morador_id:ObjectId) {
+    try{
+      const _database = await getDatabase()
+      await _database
+        .collection('moradores')
+        .updateOne({ _id: morador_id }, { oficial: false})
+    }catch(error){
+      throw new Error(`Something wrong with server, ${error}`)
+    }
+  },
+  async upadteFormed(morador_id:ObjectId) {
+    try{
+      const _database = await getDatabase()
+      await _database
+        .collection('moradores')
+        .updateOne({ _id: morador_id }, { formado: true})
+    }catch(error){
+      throw new Error(`Something wrong with server, ${error}`)
+    }
+  },
 }
 
 export default MoradoresRepository

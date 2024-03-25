@@ -20,7 +20,7 @@ const CachacaRepository = {
     }
   },
 
-  async addCachaca(morador_id: string): Promise<void> {
+  async addCachaca(morador_id: ObjectId): Promise<void> {
     try {
       const _database = await getDatabase()
       // define uma nova cachaca para um morador
@@ -36,7 +36,7 @@ const CachacaRepository = {
     
   },
 
-  async updateCachaca(morador_id: string, cachaca_ja_tomada: number, cachaca_para_tomar?: number) {
+  async updateCachaca(morador_id: ObjectId, cachaca_ja_tomada: number, cachaca_para_tomar?: number) {
     try {
       const _database = await getDatabase()
       await _database.collection('cachaca').updateOne(
