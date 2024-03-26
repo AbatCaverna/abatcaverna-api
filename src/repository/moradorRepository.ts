@@ -105,7 +105,7 @@ const MoradoresRepository = {
         
       const moradores_oficiais = (await _database
         .collection('moradores')
-        .find({ oficial: 'true' })
+        .find({ oficial: true})
         .toArray()) as Morador[]
 
       return moradores_oficiais
@@ -119,7 +119,7 @@ const MoradoresRepository = {
       const _database = await getDatabase()
       await _database
         .collection('moradores')
-        .updateOne({ _id: morador_id }, { calouro: false})
+        .updateOne({ _id: morador_id }, { $set: {calouro: false}})
     }catch(error){
       throw new Error(`Something wrong with server, ${error}`)
     }
@@ -129,7 +129,7 @@ const MoradoresRepository = {
       const _database = await getDatabase()
       await _database
         .collection('moradores')
-        .updateOne({ _id: morador_id }, { oficial: false})
+        .updateOne({ _id: morador_id }, { $set: {oficial: false}})
     }catch(error){
       throw new Error(`Something wrong with server, ${error}`)
     }
@@ -139,7 +139,7 @@ const MoradoresRepository = {
       const _database = await getDatabase()
       await _database
         .collection('moradores')
-        .updateOne({ _id: morador_id }, { formado: true})
+        .updateOne({ _id: morador_id }, { $set: {formado: true}})
     }catch(error){
       throw new Error(`Something wrong with server, ${error}`)
     }

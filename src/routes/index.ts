@@ -44,8 +44,8 @@ route.post('/produtos/upload-file', upload('photo'), ProdutosController.uploadPr
 
 route.post('/webhooks', WebhookController.webhook)
 
-route.post('/cachaca',CachacaController.index)
-// route.get('/cachaca',CachacaController.index)
+route.post('/cachaca',CachacaController.createRank)
+route.get('/cachaca',CachacaController.index)
 // route.put('/cachaca',CachacaController.index)
 
 
