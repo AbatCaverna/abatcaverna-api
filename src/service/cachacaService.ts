@@ -6,7 +6,7 @@ import { ObjectId } from 'mongodb'
 
 const cachacaService = {
   
-  async addMoradorAoRank(ano: number) {
+  async addMoradorAoRank(ano: number, ano_anterior:number) {
 
     const morador = await MoradoresRepository.getAllMoradores_oficiais()
 
@@ -14,10 +14,10 @@ const cachacaService = {
       throw new Error('User not found')
     }
     for (const idMorador of morador) {
-
       // Verificar se já existe um registro para o morador no ano fornecido
-      const existente = await CachacaRepository.verificarRegistroExistente( idMorador._id, ano-1)
-      
+  
+      const existente = await CachacaRepository.verificarRegistroExistente( idMorador._id, ano_anterior)
+      console.log(existente)
       if (!idMorador._id) throw new Error('There is no ID')
       
       if (!existente) {

@@ -8,7 +8,6 @@ const MoradoresRepository = {
   async getAllMoradores(id?: ObjectId): Promise<Morador[]> {
     try {
       const _database = await getDatabase()
-
       const moradores = (await _database
         .collection('moradores')
         .find({
@@ -100,7 +99,7 @@ const MoradoresRepository = {
     }
   },
 
-  async getAllMoradores_oficiais(id?: ObjectId): Promise<Morador[]> {
+  async getAllMoradores_oficiais(){
     try {
       const _database = await getDatabase()
         
