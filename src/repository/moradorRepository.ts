@@ -105,13 +105,8 @@ const MoradoresRepository = {
       const _database = await getDatabase()
         
       const moradores_oficiais = (await _database
-        .collection('morador')
-        .find({
-          $and:[
-            { oficial:  true }, // retira moradores que não estao na casa oficialmente 
-            { _id: id !== undefined ? id : { $exists: true } }
-          ]
-        })
+        .collection('moradores')
+        .find({ oficial: 'true' })
         .toArray()) as Morador[]
 
       return moradores_oficiais
