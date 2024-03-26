@@ -8,7 +8,6 @@ const MoradoresRepository = {
   async getAllMoradores(id?: ObjectId): Promise<Morador[]> {
     try {
       const _database = await getDatabase()
-
       const moradores = (await _database
         .collection('moradores')
         .find({
@@ -100,19 +99,13 @@ const MoradoresRepository = {
     }
   },
 
-  async getAllMoradores_oficiais(id?: ObjectId): Promise<Morador[]> {
+  async getAllMoradores_oficiais(){
     try {
       const _database = await getDatabase()
-        
-      const moradores_oficiais = (await _database
-        .collection('morador')
-        .find({
-          $and:[
-            { oficial:  true }, // retira moradores que não estao na casa oficialmente 
-            { _id: id !== undefined ? id : { $exists: true } }
-          ]
-        })
-        .toArray()) as Morador[]
+      const moradores_oficiais = await _database
+        .collection('moradores')
+        .find({ 'oficial':'true'})
+        .toArray()
 
       return moradores_oficiais
     } catch (error) {

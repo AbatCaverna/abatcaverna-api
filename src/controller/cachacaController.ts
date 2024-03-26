@@ -5,9 +5,9 @@ import cachacaService from '../service/cachacaService'
 const CachacaController = {  
   async index(req: Request, res: Response) {
     try {
-      const ano = req.body
-
-      const response = await cachacaService.addMoradorAoRank(ano)
+      const {ano , ano_anterior }= req.body
+      
+      const response = await cachacaService.addMoradorAoRank(ano, ano_anterior)
 
       return res.send({
         message: 'Sucesso',

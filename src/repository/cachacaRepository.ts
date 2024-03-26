@@ -10,7 +10,7 @@ const CachacaRepository = {
         .collection('cachaca')
         .findOne({
           $and:[
-            { _id: morador_id !== undefined ? morador_id : { $exists: true } },
+            { _id: morador_id},
             { ano_do_rank:  ano }, 
           ]
         }) as Cachaca
